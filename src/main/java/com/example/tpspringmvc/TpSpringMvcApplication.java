@@ -16,7 +16,7 @@ public class TpSpringMvcApplication {
         SpringApplication.run(TpSpringMvcApplication.class, args);
     }
 
-    @Bean
+    //@Bean
     public CommandLineRunner start(PatientRepository patientRepository){
         return args -> {
             Patient p1 = new Patient();
