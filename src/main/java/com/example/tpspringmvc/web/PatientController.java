@@ -20,7 +20,7 @@ public class PatientController {
     @Autowired
     private PatientRepository patientRepository;
 
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "size", defaultValue = "5") int size,
@@ -33,29 +33,29 @@ public class PatientController {
         return "patients";
     }
 
-    @GetMapping("/deletePatient")
+    @GetMapping("/admin/deletePatient")
     public String delete(@RequestParam(name = "id") Long id,int page, String keyword){
         patientRepository.deleteById(id);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
-    @GetMapping("/formPatients")
+    @GetMapping("/admin/formPatients")
     public String formPatients(Model model){
         model.addAttribute("patient", new Patient());
         return "formPatients";
     }
 
-    @PostMapping(path = "/save")
+    @PostMapping(path = "/admin/save")
     public String save(Model model, @Valid Patient patient, BindingResult bindingResult,
                        @RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "") String keyword){
         if (bindingResult.hasErrors()) return "formPatients";
 
         patientRepository.save(patient);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
-    @GetMapping("/editPatient")
+    @GetMapping("/admin/editPatient")
     public String editPatient(Model model, Long id, String keyword, int page){
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null) throw new RuntimeException("Patient introuvable");
@@ -63,5 +63,10 @@ public class PatientController {
         model.addAttribute("page", page);
         model.addAttribute("keyword", keyword);
         return "editPatient";
+    }
+
+    @GetMapping("/")
+    public String home(){
+        return "redirect:/user/index";
     }
 }

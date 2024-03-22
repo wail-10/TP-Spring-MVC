@@ -33,17 +33,17 @@
                         <td th:text="${p.dateNaissance}"></td>
                         <td th:text="${p.malade}"></td>
                         <td th:text="${p.score}"></td>
-                        <td>
+                        <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a onclick="return confirm('Etes vous sure ?')"
                                     class="btn btn-danger"
-                                    th:href="@{/deletePatient(id=${p.id},page=${currentPage},keyword=${keyword})}">
+                                    th:href="@{/admin/deletePatient(id=${p.id},page=${currentPage},keyword=${keyword})}">
                                 Delete
                             </a>
                         </td>
-                        <td>
+                        <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a
                                class="btn btn-success"
-                               th:href="@{/editPatient(id=${p.id},page=${currentPage},keyword=${keyword})}">
+                               th:href="@{/admin/editPatient(id=${p.id},page=${currentPage},keyword=${keyword})}">
                                 Edit
                             </a>
                         </td>
@@ -54,7 +54,7 @@
                     <li th:each="page, status : ${pages}">
                         <a
                                 th:class="${status.index==currentPage?'btn btn-info m-1':'btn btn-outline-info m-1'}"
-                                th:href="@{/index(page=${status.index}, keyword=${keyword})}"
+                                th:href="@{/user/index(page=${status.index}, keyword=${keyword})}"
                                 th:text="${status.index}"></a>
                     </li>
                 </ul>
