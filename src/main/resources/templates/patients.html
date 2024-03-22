@@ -1,52 +1,57 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1">
 <head>
     <meta charset="UTF-8">
     <title>Patients</title>
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
 </head>
 <body>
-<div class="p-3 m-3">
-    <div class="card">
-        <div class="card-header">Liste des patients</div>
-        <div class="card-body">
-            <form method="get" th:action="@{/index}">
-                <label>Mot clé</label>
-                <input type="text" name="keyword" th:value="${keyword}" />
-                <button class="btn btn-outline-info">Search</button>
-            </form>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>ID</th><th>Nom</th><th>Prénom</th><th>Date</th><th>Malade</th><th>Score</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="p:${listPatients}">
-                    <td th:text="${p.id}"></td>
-                    <td th:text="${p.nom}"></td>
-                    <td th:text="${p.prenom}"></td>
-                    <td th:text="${p.dateNaissance}"></td>
-                    <td th:text="${p.malade}"></td>
-                    <td th:text="${p.score}"></td>
-                    <td>
+<div layout:fragment="content1">
+
+    <div class="p-3 m-3">
+        <div class="card">
+            <div class="card-header">Liste des patients</div>
+            <div class="card-body">
+                <form method="get" th:action="@{/index}">
+                    <label>Mot clé</label>
+                    <input type="text" name="keyword" th:value="${keyword}" />
+                    <button class="btn btn-outline-info">Search</button>
+                </form>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th><th>Nom</th><th>Prénom</th><th>Date</th><th>Malade</th><th>Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p:${listPatients}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.nom}"></td>
+                        <td th:text="${p.prenom}"></td>
+                        <td th:text="${p.dateNaissance}"></td>
+                        <td th:text="${p.malade}"></td>
+                        <td th:text="${p.score}"></td>
+                        <td>
+                            <a
+                                    class="btn btn-danger"
+                                    th:href="@{/deletePatient(id=${p.id},page=${currentPage},keyword=${keyword})}">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page, status : ${pages}">
                         <a
-                            class="btn btn-danger"
-                            th:href="@{/deletePatient(id=${p.id},page=${currentPage},keyword=${keyword})}">
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <ul class="nav nav-pills">
-                <li th:each="page, status : ${pages}">
-                    <a
-                        th:class="${status.index==currentPage?'btn btn-info m-1':'btn btn-outline-info m-1'}"
-                        th:href="@{/index(page=${status.index}, keyword=${keyword})}"
-                        th:text="${status.index}"></a>
-                </li>
-            </ul>
+                                th:class="${status.index==currentPage?'btn btn-info m-1':'btn btn-outline-info m-1'}"
+                                th:href="@{/index(page=${status.index}, keyword=${keyword})}"
+                                th:text="${status.index}"></a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
